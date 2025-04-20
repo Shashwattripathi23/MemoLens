@@ -1,53 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center">
 
+    <!-- Polaroid Frame Layout -->
+<!--    <FrameLayout-->
+<!--        android:id="@+id/polaroid_frame"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:layout_gravity="center">-->
+
+        <!-- Polaroid Frame Background -->
+<!--        <ImageView-->
+<!--            android:id="@+id/polaroid_background"-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="300dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:scaleType="fitCenter"-->
+<!--            android:src="@drawable/polaroid" /> &lt;!&ndash; Use your Polaroid frame image &ndash;&gt;-->
+
+        <!-- Captured Image inside the Polaroid frame -->
+        <ImageView
+            android:id="@+id/captured_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="centerInside" />
+
+<!--        <ImageView-->
+<!--            android:id="@+id/polaroid_image"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:src="@drawable/polaroid" />-->
+<!--    </FrameLayout>-->
+
+    <!-- Caption Input -->
     <EditText
-        android:id="@+id/edit_caption"
+        android:id="@+id/caption_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Write a caption..."
-        android:inputType="textMultiLine"
-        android:minLines="3"
-        android:gravity="top|start" />
-
-    <VideoView
-        android:id="@+id/video_view"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:hint="Add your caption here..."
+        android:textSize="16sp"
         android:layout_marginTop="16dp" />
 
-    <ImageButton
-        android:id="@+id/btn_play"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_gravity="center"
-        android:background="@android:color/transparent"
-        android:src="@android:drawable/ic_media_play"
-        android:visibility="visible"/>
+    <!-- Record Button -->
+    <Button
+        android:id="@+id/btn_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hold to Record Voice Note"
+        android:layout_marginTop="16dp" />
 
-    <ImageView
-        android:id="@+id/image_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.5"
-        app:layout_constraintHeight_percent="0.5"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
+    <!-- Voice Note Container -->
     <LinearLayout
         android:id="@+id/voice_note_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"/>
-
-    <Button
-        android:id="@+id/btn_record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hold to Record" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:orientation="vertical"
+        android:layout_marginTop="16dp" />
+</LinearLayout>

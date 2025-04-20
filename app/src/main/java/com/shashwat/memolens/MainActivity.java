@@ -56,6 +56,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+import android.widget.ImageButton;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import android.os.Bundle;
 public class MainActivity extends AppCompatActivity {
 
 //    private Camera/ previewView;
@@ -112,37 +116,42 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        btnStartVideo = findViewById(R.id.btn_start_video);
-        btnStopVideo = findViewById(R.id.btn_stop_video);
-        btnRecordVideo = findViewById(R.id.btn_record_video);
-        layoutVideoControls = findViewById(R.id.layout_video_controls);
-
-// When user taps "Record", show start/stop buttons
-        btnRecordVideo.setOnClickListener(v -> {
-            layoutVideoControls.setVisibility(View.VISIBLE);
-            btnRecordVideo.setVisibility(View.GONE);
+        findViewById(R.id.btn_open_gallery).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
+            startActivity(intent);
         });
 
-// Start recording
-        btnStartVideo.setOnClickListener(v -> {
-            isRecording = true;
-            btnStartVideo.setEnabled(false);
-            btnStopVideo.setEnabled(true);
 
-            // TODO: Start actual video recording here
-            Toast.makeText(this, "Recording started...", Toast.LENGTH_SHORT).show();
-        });
-
-// Stop recording
-        btnStopVideo.setOnClickListener(v -> {
-            isRecording = false;
-            btnStartVideo.setEnabled(true);
-            btnStopVideo.setEnabled(false);
-
-            // TODO: Stop actual video recording here
-            Toast.makeText(this, "Recording stopped.", Toast.LENGTH_SHORT).show();
-        });
+//        btnStartVideo = findViewById(R.id.btn_start_video);
+//        btnStopVideo = findViewById(R.id.btn_stop_video);
+//        btnRecordVideo = findViewById(R.id.btn_record_video);
+//        layoutVideoControls = findViewById(R.id.layout_video_controls);
+//
+//// When user taps "Record", show start/stop buttons
+//        btnRecordVideo.setOnClickListener(v -> {
+//            layoutVideoControls.setVisibility(View.VISIBLE);
+//            btnRecordVideo.setVisibility(View.GONE);
+//        });
+//
+//// Start recording
+//        btnStartVideo.setOnClickListener(v -> {
+//            isRecording = true;
+//            btnStartVideo.setEnabled(false);
+//            btnStopVideo.setEnabled(true);
+//
+//            // TODO: Start actual video recording here
+//            Toast.makeText(this, "Recording started...", Toast.LENGTH_SHORT).show();
+//        });
+//
+//// Stop recording
+//        btnStopVideo.setOnClickListener(v -> {
+//            isRecording = false;
+//            btnStartVideo.setEnabled(true);
+//            btnStopVideo.setEnabled(false);
+//
+//            // TODO: Stop actual video recording here
+//            Toast.makeText(this, "Recording stopped.", Toast.LENGTH_SHORT).show();
+//        });
 
 
         // Request microphone permission
@@ -172,11 +181,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Flip camera button
-        Button btnFlip = findViewById(R.id.btn_flip_camera);
+        ImageButton  btnFlip = findViewById(R.id.btn_flip_camera);
         btnFlip.setOnClickListener(v -> flipCamera());
 
         // Capture photo button
-        Button btnCapture = findViewById(R.id.btn_capture_photo);
+        ImageButton  btnCapture = findViewById(R.id.btn_capture_photo);
         btnCapture.setOnClickListener(v -> {
             if (imageCapture != null) {
                 File photoFile = getOutputFile();

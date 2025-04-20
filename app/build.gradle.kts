@@ -29,6 +29,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    sourceSets {
+        getByName("main") {
+            java {
+                srcDirs("src\\main\\java", "src\\main\\java\\com\\shashwat\\adapters")
+            }
+        }
+    }
 }
 
 dependencies {
@@ -45,7 +52,7 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:1.1.0")
     implementation("androidx.camera:camera-view:1.1.0")
     implementation ("com.squareup.picasso:picasso:2.71828")
-
+    implementation ("com.google.android.material:material:1.8.0")
 
     implementation ("androidx.exifinterface:exifinterface:1.3.6")
 }
