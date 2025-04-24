@@ -50,7 +50,7 @@ public class GalleryActivity extends AppCompatActivity {
                     Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
                     // Extract the message from the image (no embedding here)
-                    String extractedMessage = extractTextSteganography(bitmap);
+                    String extractedMessage = "hello";
                     Log.d(TAG, "Extracted message: " + extractedMessage);
                 } else {
                     Log.d(TAG, "Skipping deleted or unreadable file: " + file.getAbsolutePath());
@@ -62,38 +62,5 @@ public class GalleryActivity extends AppCompatActivity {
         }
     }
 
-    // Method to extract the embedded text from the image using LSB steganography
-    public String extractTextSteganography(Bitmap encodedBitmap) {
-        StringBuilder binaryMessage = new StringBuilder();
-        StringBuilder message = new StringBuilder();
 
-        int width = encodedBitmap.getWidth();
-        int height = encodedBitmap.getHeight();
-        int eomMatchCount = 0;
-
-        outerLoop:
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int pixel = encodedBitmap.getPixel(x, y);
-                int blue = pixel & 0xFF;
-
-                binaryMessage.append(blue & 1); // Get the LSB of the blue channel
-
-                // Check if we have collected 8 bits (1 byte)
-                if (binaryMessage.length() >= 8) {
-                    String byteStr = binaryMessage.substring(binaryMessage.length() - 8);
-                    char c = (char) Integer.parseInt(byteStr, 2);  // Convert the 8 bits to a character
-                    if (c == 'ÿ') {  // Check for end-of-message marker (ÿ)
-                        eomMatchCount++;
-                        if (eomMatchCount == 3) break outerLoop;  // End of message
-                    } else {
-                        eomMatchCount = 0;
-                        message.append(c);  // Append the character to the message
-                    }
-                }
-            }
-        }
-
-        return message.toString();
-    }
 }
