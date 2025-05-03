@@ -1,55 +1,88 @@
 package com.shashwat.memolens;
+
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.BitmapFactory;
-
 import android.graphics.Bitmap;
 import android.widget.Toast;
-
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import android.view.Gravity;
-
 import android.view.ViewGroup;
-
 import android.graphics.Matrix;
 import androidx.exifinterface.media.ExifInterface;
 import java.io.IOException;
 import java.io.File;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-
 import android.os.Environment;
-
 import android.util.Log;
-
 import android.view.MotionEvent;
-
 import android.widget.SeekBar;
-
 import java.io.FileOutputStream;
-
 import android.widget.EditText;
-
 import android.widget.Button;
-
 import android.content.Intent;
 
+import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
+import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
+import com.ayush.imagesteganographylibrary.Text.ImageSteganography;
+import com.ayush.imagesteganographylibrary.Text.TextDecoding;
+import com.ayush.imagesteganographylibrary.Text.TextEncoding;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
-
-
-public class CaptionActivity extends AppCompatActivity {
+public class CaptionActivity extends AppCompatActivity implements TextEncodingCallback , TextDecodingCallback{
 
     private MediaRecorder recorder;
     private String audioFilePath;
     private LinearLayout voiceContainer;
     private VideoView videoView;
     private ImageButton playButton;
+    private Bitmap encoded_image;
 
+    public interface TextEncodingCallback {
+
+        public void onStart() ;
+        public void onProgress(int progress);
+
+    }
+
+    public void onCompleteTextEncoding(ImageSteganography result) {
+
+        //By the end of
+
+
+            Log.d("MemoLenss", "ImageSteganography result:");
+            Log.d("MemoLenss", "isEncoded: " + result.isEncoded());
+            Log.d("MemoLenss", "Encoded Image: " + (result.getEncoded_image() != null ? "Available" : "Null"));
+            Log.d("MemoLenss", "Original Message: " + result.getMessage());
+            Log.d("MemoLenss", "Encrypted Message: " + result.getEncrypted_message());
+
+
+
+        if (result != null && result.isEncoded()) {
+            encoded_image = result.getEncoded_image();
+            final Bitmap imgToSave = encoded_image;
+            saveToInternalStorage(imgToSave);
+        }
+    }
+
+    public interface TextDecodingCallback {
+
+        public void onStart() ;
+        public void onProgress(int progress);
+        public void onCompleteTextEncoding(ImageSteganography result);
+    }
+
+
+
+    private ImageSteganography imageSteganography;
 
     private void startRecording() {
         try {
@@ -81,12 +114,6 @@ public class CaptionActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
-
-
     private Bitmap getRotatedBitmap(String imagePath) {
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
         try {
@@ -112,8 +139,6 @@ public class CaptionActivity extends AppCompatActivity {
         }
         return bitmap;
     }
-
-
 
     private void showAudioPlayer() {
         LinearLayout playerLayout = new LinearLayout(this);
@@ -150,7 +175,6 @@ public class CaptionActivity extends AppCompatActivity {
             }
         });
 
-        // Update seek bar as audio plays
         new Thread(() -> {
             while (player != null && player.getCurrentPosition() < player.getDuration()) {
                 seekBar.setProgress(player.getCurrentPosition());
@@ -162,7 +186,6 @@ public class CaptionActivity extends AppCompatActivity {
             }
         }).start();
 
-        // Allow seeking
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) player.seekTo(progress);
@@ -173,7 +196,6 @@ public class CaptionActivity extends AppCompatActivity {
 
         playerLayout.addView(playPauseBtn);
         playerLayout.addView(seekBar);
-
         voiceContainer.addView(playerLayout);
     }
 
@@ -197,23 +219,18 @@ public class CaptionActivity extends AppCompatActivity {
         }
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         LinearLayout layout = new LinearLayout(this);
-
-        setContentView(R.layout.activity_caption);
-
-
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setGravity(Gravity.CENTER);
         layout.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        // Load image
+        setContentView(R.layout.activity_caption);
+
         String imagePath = getIntent().getStringExtra("image_path");
         ImageView imageView = new ImageView(this);
         imageView.setImageBitmap(getRotatedBitmap(imagePath));
@@ -226,14 +243,12 @@ public class CaptionActivity extends AppCompatActivity {
         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         imageView.setLayoutParams(imageParams);
 
-        // Caption input field
         EditText captionInput = new EditText(this);
         captionInput.setHint("Add your caption here...");
         captionInput.setTextSize(16);
         captionInput.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        // Record button
         Button btnRecord = new Button(this);
         btnRecord.setText("Hold to Record Voice Note");
 
@@ -249,24 +264,21 @@ public class CaptionActivity extends AppCompatActivity {
             return false;
         });
 
-        Button saveButton = new Button( this);
+        Button saveButton = new Button(this);
         saveButton.setText("Save");
         saveButton.setOnClickListener(v -> {
             String caption = captionInput.getText().toString();
             Bitmap originalBitmap = getRotatedBitmap(imagePath);
-            try {
-                Bitmap stegoBitmap = originalBitmap;
-                imageView.setImageBitmap(stegoBitmap);
-                saveImageToGallery(stegoBitmap);
-                Toast.makeText(this, "Image saved with embedded text!", Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
-                e.printStackTrace();
 
-                Toast.makeText(this, "Error embedding text: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            }
+            // Initialize ImageSteganography with caption and image
+            imageSteganography = new ImageSteganography(caption, "Shashwat", originalBitmap);
+
+            // Initialize TextEncoding and encode with the callback
+            TextEncoding textEncoding = new TextEncoding(CaptionActivity.this, CaptionActivity.this);
+            textEncoding.encode(imageSteganography);  // Ensure encoding process triggers correctly
+
         });
 
-        // Container for voice note playback
         voiceContainer = new LinearLayout(this);
         voiceContainer.setOrientation(LinearLayout.VERTICAL);
         voiceContainer.setId(R.id.voice_note_container);
@@ -278,9 +290,68 @@ public class CaptionActivity extends AppCompatActivity {
         layout.addView(captionInput);
         layout.addView(btnRecord);
         layout.addView(voiceContainer);
-
-        setContentView(layout);
         layout.addView(saveButton);
+        setContentView(layout);
     }
+
+    public void decodeImage(Bitmap stegoBitmap, String secretKey) {
+        // Initialize the ImageSteganography instance for decoding
+        ImageSteganography steganographyDecoder = new ImageSteganography(secretKey, stegoBitmap);
+
+        // Assuming the image contains the encrypted message, now decrypt it
+        TextDecoding textDecoding =  new TextDecoding(CaptionActivity.this,CaptionActivity.this);
+
+        textDecoding.execute(steganographyDecoder);
+
+//        if (extractedText != null && !extractedText.isEmpty()) {
+//            // Display the extracted text
+//            Toast.makeText(this, extractedText, Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(this, extractedText, Toast.LENGTH_SHORT).show();
+//        }
+    }
+
+    @Override
+    public void onStartTextEncoding() {
+        // Optional loading UI can be added here
+    }
+
+    private void saveToInternalStorage(Bitmap bitmapImage) {
+        // 1. Create the MemoLens directory in Pictures
+        File folder = new File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                "MemoLens"
+        );
+
+        if (!folder.exists()) {
+            folder.mkdirs(); // Create folder if it doesn't exist
+        }
+
+        // 2. Create the file
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault()).format(new Date());
+        File file = new File(folder, "Memolens-" + timestamp + ".png");
+
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            // 3. Save the Bitmap
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+
+            // 4. Notify the MediaScanner to make it visible in Gallery
+            MediaScannerConnection.scanFile(
+                    getApplicationContext(),
+                    new String[]{file.getAbsolutePath()},
+                    new String[]{"image/png"},
+                    null
+            );
+
+            // 5. Show success message
+            Toast.makeText(this, "Image saved to Pictures/MemoLens", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 
 }

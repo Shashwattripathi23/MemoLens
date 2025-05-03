@@ -1,0 +1,34 @@
+plugins {
+    id 'com.android.library'
+}
+
+
+
+android {
+    compileSdkVersion 34  // Updated from 26
+    namespace 'com.ayush.imagesteganographylibrary'
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 34  // Updated from 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"  // Updated to AndroidX
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+// Remove the 'force' block for old annotations (conflicts with AndroidX)
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation ("androidx.appcompat:appcompat:1.6.1")  // Replaced Support Library with AndroidX
+    testImplementation ("junit:junit:4.13.2")
+    androidTestImplementation ("androidx.test:runner:1.5.2") // Updated to AndroidX
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")  // Updated to AndroidX
+}

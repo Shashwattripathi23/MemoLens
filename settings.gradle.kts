@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MemoLens"
 include(":app")
+include ( ":ImageSteganographyLibrary")
