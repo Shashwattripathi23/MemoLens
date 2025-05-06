@@ -11,38 +11,48 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.graphics.Bitmap;
 
 import java.util.List;
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
-    private final List<Bitmap> bitmapList;
+import android.util.Log;
+import java.io.File;
 
-    public ImageAdapter(List<Bitmap> bitmapList) {
-        this.bitmapList = bitmapList;
+
+
+import com.bumptech.glide.Glide;
+
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
+
+    private final File[] imageFiles;
+
+    public ImageAdapter(File[] imageFiles) {
+        this.imageFiles = imageFiles;
     }
 
     @NonNull
     @Override
-    public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_image, parent, false);
-        return new ImageViewHolder(itemView);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_image, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        Bitmap image = bitmapList.get(position);
-        holder.imageView.setImageBitmap(image);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        File imageFile = imageFiles[position];
+        Glide.with(holder.imageView.getContext())
+                .load(imageFile)
+                .centerCrop()
+                .into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return bitmapList.size();
+        return imageFiles.length;
     }
 
-    static class ImageViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
 
-        ImageViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
+        public ViewHolder(View view) {
+            super(view);
+            imageView = view.findViewById(R.id.imageView);
         }
     }
 }

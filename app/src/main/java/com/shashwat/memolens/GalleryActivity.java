@@ -30,6 +30,35 @@ public class GalleryActivity extends AppCompatActivity implements TextDecodingCa
     private final List<Bitmap> decodedImages = new ArrayList<>();
     private int pendingImages = 0;
 
+
+    private Bitmap decodeSampledBitmapFromFile(String filePath, int reqWidth, int reqHeight) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+
+        return BitmapFactory.decodeFile(filePath, options);
+    }
+
+    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +67,7 @@ public class GalleryActivity extends AppCompatActivity implements TextDecodingCa
         loader = findViewById(R.id.loader);
         recyclerView = findViewById(R.id.image_grid);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+
 
         // Folder where images are stored (using getExternalFilesDir for API level 29 and higher)
         File folder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MemoLens");
@@ -57,6 +87,9 @@ public class GalleryActivity extends AppCompatActivity implements TextDecodingCa
             File file = new File(dir, name);
             return file.isFile() && (name.endsWith(".jpg") || name.endsWith(".png")) && !name.startsWith(".");
         });
+
+        recyclerView.setAdapter(null);
+        recyclerView.setAdapter(new ImageAdapter(files));
 
         // Check and log valid image files
         if (files != null && files.length > 0) {
@@ -98,21 +131,20 @@ public class GalleryActivity extends AppCompatActivity implements TextDecodingCa
         }
     }
 
-    @Override
+
     public void onCompleteTextEncoding(ImageSteganography result) {
-        if (result != null && result.getImage() != null) {
-            decodedImages.add(result.getImage());  // Store the decoded image
+        if (result != null && result.isDecoded() && result.getMessage() != null) {
+            decodedImages.add(result.getImage());
+            Log.d("Decoded_Message", result.getMessage());
+        } else {
+            Log.e("Decode_Failed", "Decryption failed or message is null");
         }
+
         pendingImages--;
         if (pendingImages == 0) {
-            // Hide loader and show RecyclerView when all images are processed
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    loader.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    recyclerView.setAdapter(new ImageAdapter(decodedImages));  // Set the updated adapter
-                }
+            runOnUiThread(() -> {
+                loader.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
             });
         }
     }

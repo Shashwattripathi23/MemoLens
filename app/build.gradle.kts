@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
     androidTestImplementation(libs.espresso.core)
 
     // Updated CameraX Dependencies (Stable versions)
@@ -54,6 +55,7 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.71828")
     implementation ("com.google.android.material:material:1.8.0")
     implementation (project(":ImageSteganographyLibrary"))
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 
     implementation ("androidx.exifinterface:exifinterface:1.3.6")
 }
