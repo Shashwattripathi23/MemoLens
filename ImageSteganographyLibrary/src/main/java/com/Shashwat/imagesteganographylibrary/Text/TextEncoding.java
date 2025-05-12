@@ -1,4 +1,4 @@
-package com.ayush.imagesteganographylibrary.Text;
+package com.Shashwat.imagesteganographylibrary.Text;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -6,8 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
-import com.ayush.imagesteganographylibrary.Utils.Utility;
+import com.Shashwat.imagesteganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
+import com.Shashwat.imagesteganographylibrary.Utils.Utility;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

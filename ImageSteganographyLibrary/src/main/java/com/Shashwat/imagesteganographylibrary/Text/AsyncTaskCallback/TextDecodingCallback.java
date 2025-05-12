@@ -1,6 +1,6 @@
-package com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback;
+package com.Shashwat.imagesteganographylibrary.Text.AsyncTaskCallback;
 
-import com.ayush.imagesteganographylibrary.Text.ImageSteganography;
+import com.Shashwat.imagesteganographylibrary.Text.ImageSteganography;
 
 /**
  * This the callback interface for TextDecoding AsyncTask.

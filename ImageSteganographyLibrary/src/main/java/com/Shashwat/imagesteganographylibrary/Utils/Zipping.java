@@ -1,4 +1,4 @@
-package com.ayush.imagesteganographylibrary.Utils;
+package com.Shashwat.imagesteganographylibrary.Utils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

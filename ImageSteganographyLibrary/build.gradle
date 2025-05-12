@@ -6,7 +6,7 @@ plugins {
 
 android {
     compileSdkVersion 34  // Updated from 26
-    namespace 'com.ayush.imagesteganographylibrary'
+    namespace 'com.Shashwat.imagesteganographylibrary'
 
     defaultConfig {
         minSdkVersion 19

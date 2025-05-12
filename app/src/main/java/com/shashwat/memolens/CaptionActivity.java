@@ -28,11 +28,11 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.content.Intent;
 
-import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
-import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
-import com.ayush.imagesteganographylibrary.Text.ImageSteganography;
-import com.ayush.imagesteganographylibrary.Text.TextDecoding;
-import com.ayush.imagesteganographylibrary.Text.TextEncoding;
+import com.Shashwat.imagesteganographylibrary.Text.AsyncTaskCallback.TextEncodingCallback;
+import com.Shashwat.imagesteganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
+import com.Shashwat.imagesteganographylibrary.Text.ImageSteganography;
+import com.Shashwat.imagesteganographylibrary.Text.TextDecoding;
+import com.Shashwat.imagesteganographylibrary.Text.TextEncoding;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;

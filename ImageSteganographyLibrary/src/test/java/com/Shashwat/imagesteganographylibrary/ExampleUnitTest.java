@@ -1,4 +1,4 @@
-package com.ayush.imagesteganographylibrary;
+package com.Shashwat.imagesteganographylibrary;
 
 import org.junit.Test;
 

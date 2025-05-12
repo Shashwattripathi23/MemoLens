@@ -1,4 +1,4 @@
-package com.ayush.imagesteganographylibrary.Text;
+package com.Shashwat.imagesteganographylibrary.Text;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -15,8 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.ayush.imagesteganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
-import com.ayush.imagesteganographylibrary.Utils.Utility;
+import com.Shashwat.imagesteganographylibrary.Text.AsyncTaskCallback.TextDecodingCallback;
+import com.Shashwat.imagesteganographylibrary.Utils.Utility;
 
 import java.io.File;
 import java.io.FileOutputStream;

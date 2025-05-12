@@ -1,10 +1,10 @@
-package com.ayush.imagesteganographylibrary.Text;
+package com.Shashwat.imagesteganographylibrary.Text;
 
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.ayush.imagesteganographylibrary.Utils.Crypto;
-import com.ayush.imagesteganographylibrary.Utils.Utility;
+import com.Shashwat.imagesteganographylibrary.Utils.Crypto;
+import com.Shashwat.imagesteganographylibrary.Utils.Utility;
 
 /**
  * This main class of the text steganography
