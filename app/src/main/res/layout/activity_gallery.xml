@@ -1,19 +1,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#121212"> <!-- Dark background -->
 
+    <!-- Heading TextView -->
+    <TextView
+        android:id="@+id/heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Saved Memories"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="32dp"
+    android:layout_marginLeft="16dp"
+    android:padding="8dp"
+    android:shadowColor="#000000"
+    android:shadowDx="1"
+    android:shadowDy="1"
+    android:shadowRadius="3" />
+
+    <!-- ProgressBar -->
     <ProgressBar
         android:id="@+id/loader"
         style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
         android:layout_centerInParent="true"
         android:visibility="visible"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:indeterminateTint="#FF4081" /> <!-- Accent color -->
 
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/image_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:layout_below="@id/heading"
+        android:layout_marginTop="16dp" />
 </RelativeLayout>

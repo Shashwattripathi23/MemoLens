@@ -60,6 +60,7 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
+import android.widget.ProgressBar;
 public class MainActivity extends AppCompatActivity {
 
 //    private Camera/ previewView;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 101;
     // Method to get output file for the captured image
     private PreviewView previewView;
+    private ProgressBar progressBar;
 
     private boolean isRecording = false;
     private Button btnStartVideo, btnStopVideo, btnRecordVideo;
@@ -115,11 +117,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        progressBar = findViewById(R.id.progress_bar);
 
         findViewById(R.id.btn_open_gallery).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
             startActivity(intent);
         });
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
 
 
 //        btnStartVideo = findViewById(R.id.btn_start_video);
@@ -195,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
         btnCapture.setOnClickListener(v -> {
             if (imageCapture != null) {
                 File photoFile = getOutputFile();
+                progressBar.setVisibility(View.VISIBLE);
                 ImageCapture.OutputFileOptions outputOptions = new ImageCapture.OutputFileOptions.Builder(photoFile).build();
 
                 imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(this),
@@ -204,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
                                 Intent intent = new Intent(MainActivity.this, CaptionActivity.class);
                                 intent.putExtra("image_path", photoFile.getAbsolutePath());
                                 startActivity(intent);
+                                progressBar.setVisibility(View.GONE);
                             }
 
                             @Override

@@ -45,6 +45,7 @@ public class TextDecoding {
         showLoading();
         executorService.execute(() -> {
             ImageSteganography result = doInBackground(imageSteganography);
+
             mainHandler.post(() -> {
                 dismissLoading();
                 textDecodingCallback.onCompleteTextEncoding(result);

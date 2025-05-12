@@ -9,6 +9,12 @@
     tools:context=".MainActivity">
 
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
 
     <!-- Preview View for Camera -->
     <androidx.camera.view.PreviewView

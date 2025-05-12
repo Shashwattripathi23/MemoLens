@@ -194,9 +194,9 @@ public class CaptionActivity extends AppCompatActivity implements TextEncodingCa
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        playerLayout.addView(playPauseBtn);
-        playerLayout.addView(seekBar);
-        voiceContainer.addView(playerLayout);
+//        playerLayout.addView(playPauseBtn);
+//        playerLayout.addView(seekBar);
+//        voiceContainer.addView(playerLayout);
     }
 
     private void saveImageToGallery(Bitmap bitmap) {
@@ -222,7 +222,13 @@ public class CaptionActivity extends AppCompatActivity implements TextEncodingCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setGravity(Gravity.CENTER);
@@ -279,17 +285,17 @@ public class CaptionActivity extends AppCompatActivity implements TextEncodingCa
 
         });
 
-        voiceContainer = new LinearLayout(this);
-        voiceContainer.setOrientation(LinearLayout.VERTICAL);
-        voiceContainer.setId(R.id.voice_note_container);
-        voiceContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
+//        voiceContainer = new LinearLayout(this);
+//        voiceContainer.setOrientation(LinearLayout.VERTICAL);
+//        voiceContainer.setId(R.id.voice_note_container);
+//        voiceContainer.setLayoutParams(new LinearLayout.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+//        ));
 
         layout.addView(imageView);
         layout.addView(captionInput);
-        layout.addView(btnRecord);
-        layout.addView(voiceContainer);
+//        layout.addView(btnRecord);
+//        layout.addView(voiceContainer);
         layout.addView(saveButton);
         setContentView(layout);
     }
