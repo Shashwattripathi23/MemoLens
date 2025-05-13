@@ -26,6 +26,16 @@
         android:label="MemoLens"
         android:theme="@style/Theme.AppCompat.DayNight">
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
 
         <activity android:name=".MainActivity"
             android:exported="true">
@@ -37,6 +47,7 @@
         <activity android:name=".CaptionActivity" />
         <activity android:name=".GalleryActivity" />
         <activity android:name=".PhotoActivity" />
+        <activity android:name=".InfoActivity" />
 
 
     </application>

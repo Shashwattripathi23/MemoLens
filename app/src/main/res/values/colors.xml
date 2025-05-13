@@ -1,5 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="background_dark">#121212</color>
+    <color name="neon_blue">#00FFFF</color>
+    <color name="neon_purple">#BB86FC</color>
+    <color name="neon_pink">#FF007F</color>
+    <color name="neon_green">#00FF00</color>
+    <color name="neon_yellow">#FFFF00</color>
+    <color name="button_bg">#303030</color>
+    <color name="overlay_dark">#66000000</color>
+    <color name="darkBackground">#121212</color>
+    <color name="primaryColor">#6200EE</color>
+    <color name="primaryTextColor">#FFFFFF</color>
+    <color name="secondaryTextColor">#B0B0B0</color>
+    <color name="accentColor">#FF4081</color>
+    <color name="tertiaryTextColor">#03DAC5</color>
+    <color name="errorColor">#B00020</color>
+    <color name="dividerColor">#1F1F1F</color>
+    <color name="gradientStart">#F06857</color>
+    <color name="gradientEnd">#C13030</color>
 </resources>

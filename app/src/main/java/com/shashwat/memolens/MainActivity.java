@@ -61,6 +61,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 import android.widget.ProgressBar;
+import android.os.Bundle;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
+import android.widget.ImageButton;
+import androidx.appcompat.app.AppCompatActivity;
+
 public class MainActivity extends AppCompatActivity {
 
 //    private Camera/ previewView;
@@ -79,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
     private boolean isRecording = false;
     private Button btnStartVideo, btnStopVideo, btnRecordVideo;
     private LinearLayout layoutVideoControls;
+
+
+    private boolean isTorchOn = false;
+    private CameraManager cameraManager;
+    private String cameraId;
 
     private File getOutputFile() {
         File dir = new File(getExternalFilesDir(null), "images");
@@ -153,6 +164,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void toggleInfo() {
+        Intent intent = new Intent(this, InfoActivity.class);
+        startActivity(intent);
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,6 +185,16 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
         checkPermissions();
+
+        cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
+        try {
+            cameraId = cameraManager.getCameraIdList()[0];  // Use the back camera (index 0 is usually the back camera)
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+
+        ImageButton info_btn = findViewById(R.id.btn_torch);
+        info_btn.setOnClickListener(v -> toggleInfo());
 
 //        btnStartVideo = findViewById(R.id.btn_start_video);
 //        btnStopVideo = findViewById(R.id.btn_stop_video);

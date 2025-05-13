@@ -5,86 +5,117 @@
     android:padding="20dp">
 
     <!-- Heading TextView -->
-<TextView
-android:id="@+id/heading"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Memo"
-android:textSize="24sp"
-android:textStyle="bold"
-android:textColor="#FFFFFF"
-    android:layout_alignParentTop="true"
-    android:layout_marginTop="32dp"
-    android:layout_marginLeft="16dp"
-    android:padding="8dp"
-    android:shadowColor="#000000"
-    android:shadowDx="1"
-    android:shadowDy="1"
-    android:shadowRadius="3" />
+    <TextView
+        android:id="@+id/heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Memo"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="16dp"
+        android:padding="0dp"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="3" />
 
-    <!-- Delete Icon -->
-<ImageView
-android:id="@+id/deleteIcon"
-android:layout_width="40dp"
-android:layout_height="40dp"
-android:layout_alignParentEnd="true"
-android:layout_marginTop="20dp"
-android:layout_marginEnd="20dp"
-android:src="@drawable/ic_delete"
-android:contentDescription="Delete Image"
-android:padding="8dp"
-android:tint="#FFFFFF"
-android:background="?android:attr/selectableItemBackground"
-android:scaleType="centerInside"/>
+    <!-- Buttons Container -->
+    <LinearLayout
+        android:id="@+id/buttonsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="0dp">
+
+        <!-- Delete Icon -->
+        <ImageView
+            android:id="@+id/deleteIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_delete"
+            android:contentDescription="Delete Image"
+            android:padding="8dp"
+            android:tint="#DA6056"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="centerInside"
+            android:layout_marginEnd="8dp" />
+
+        <!-- Share Icon -->
+        <ImageView
+            android:id="@+id/shareIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_close"
+            android:contentDescription="Share Image"
+            android:padding="8dp"
+            android:tint="#FFF"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="centerInside" />
+
+    </LinearLayout>
 
     <!-- Polaroid-style container -->
-<LinearLayout
-android:id="@+id/polaroidContainer"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-android:background="@drawable/text_background"
-android:padding="10dp"
-android:layout_centerInParent="true"
-android:minHeight="550dp"
-android:gravity="center">
+    <LinearLayout
+        android:id="@+id/polaroidContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/text_background"
+        android:padding="16dp"
+        android:layout_below="@id/heading"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
 
-<!-- Date on the top border -->
-<TextView
-    android:id="@+id/captureDate"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Capture date will appear here"
-    android:textSize="14sp"
-    android:textColor="#000000"
-    android:background="#FFFFFF"
-    android:padding="8dp"
-    android:gravity="center" />
+        <!-- Date section -->
+        <TextView
+            android:id="@+id/captureDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="Capture date will appear here"
+            android:textColor="#555555"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/capture_date_background"
+            android:elevation="4dp" />
 
-<!-- Image section (90% of the rectangle) -->
-<ImageView
-    android:id="@+id/fullImageView"
-    android:layout_width="400dp"
-    android:layout_height="700dp"
-    android:layout_marginTop="8dp"
-    android:scaleType="centerCrop"
-    android:layout_gravity="center"
-    android:layout_marginBottom="8dp"
-    android:layout_alignParentTop="true"
-    android:background="@drawable/image_background" />
 
-<!-- Message section -->
-<TextView
-    android:id="@+id/decodedMessage"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Decoded message will appear here"
-    android:textSize="16sp"
-    android:textColor="#000000"
-    android:layout_marginTop="10dp"
-    android:gravity="center"
-    android:background="#FFFFFF"
-    android:padding="8dp"
-    android:maxWidth="250dp" />
-</LinearLayout>
-    </RelativeLayout>
+        <!-- Image section -->
+        <ImageView
+            android:id="@+id/fullImageView"
+            android:layout_width="match_parent"
+            android:layout_height="700dp"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:background="@drawable/image_background" />
+
+        <!-- Message section -->
+        <TextView
+            android:id="@+id/decodedMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Decoded message will appear here"
+            android:textSize="17sp"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:background="@drawable/decoded_message_background"
+            android:padding="16dp"
+            android:maxWidth="280dp"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="sans-serif-medium" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

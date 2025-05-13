@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darkBackground"
+    android:fillViewport="true">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darkBackground">
+
+    <!-- Back Button -->
+    <ImageView
+        android:id="@+id/back_icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_back"
+        android:contentDescription="Back"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:tint="@color/gradientStart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Main Heading -->
+    <TextView
+        android:id="@+id/main_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MemoLens - User Guide"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/primaryTextColor"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Overview Section -->
+    <TextView
+        android:id="@+id/overview_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Overview"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/secondaryTextColor"
+        app:layout_constraintTop_toBottomOf="@id/main_heading"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/overview_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="MemoLens is a privacy-first, offline photo management app that uses steganography to hide messages within images. This ensures your data remains secure and private, with no cloud storage or internet connection required. The app operates entirely on your device, keeping your sensitive information safe and completely within your control."
+        android:textColor="@color/secondaryTextColor"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/overview_heading" />
+
+    <!-- Key Features Section -->
+    <TextView
+        android:id="@+id/features_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Key Features"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/secondaryTextColor"
+        app:layout_constraintTop_toBottomOf="@id/overview_text"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/features_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="• Advanced Steganography: Securely hide messages within your photos.\n\n• Offline Operation: No internet required – your data stays on your device.\n\n• Local Storage: Photos and messages are stored locally for complete privacy.\n\n• User-Friendly Gallery: View encrypted messages in images shared with you.\n\n• Seamless Sharing: Share encrypted images through your device's native sharing options."
+        android:textColor="@color/secondaryTextColor"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/features_heading" />
+
+    <!-- Getting Started Section -->
+    <TextView
+        android:id="@+id/getting_started_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Getting Started"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/secondaryTextColor"
+        app:layout_constraintTop_toBottomOf="@id/features_text"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/getting_started_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="1. Capture a photo within the app.\n\n2. Add a hidden message before saving the photo.\n\n3. Use the built-in gallery to view your photos and reveal hidden messages in shared images.\n\n4. Share encrypted photos securely through your device’s native sharing options."
+        android:textColor="@color/secondaryTextColor"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/getting_started_heading" />
+
+    <!-- Privacy Note -->
+    <TextView
+        android:id="@+id/privacy_note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:text="🔒 Your Privacy, Our Priority\n\nMemoLens is designed with a deep commitment to your privacy. All data, including your photos and embedded messages, is stored locally on your device. Unlike cloud-based apps, MemoLens does not send, share, or upload any of your data over the internet. This means you remain in complete control of your information at all times, ensuring absolute privacy and peace of mind."
+        android:textColor="@color/tertiaryTextColor"
+        android:textStyle="normal"
+        android:textSize="16sp"
+        android:lineSpacingExtra="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/getting_started_text" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

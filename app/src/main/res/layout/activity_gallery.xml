@@ -13,13 +13,29 @@
         android:textStyle="bold"
         android:textColor="#FFFFFF"
     android:layout_alignParentTop="true"
-    android:layout_marginTop="32dp"
+
+
+    android:layout_marginTop="20dp"
     android:layout_marginLeft="16dp"
     android:padding="8dp"
     android:shadowColor="#000000"
     android:shadowDx="1"
     android:shadowDy="1"
     android:shadowRadius="3" />
+
+
+    <ImageButton
+        android:id="@+id/btn_gallery"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="Open Gallery"
+        android:padding="8dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/gallery_ic"
+        android:tint="#FFFFFF" />
 
     <!-- ProgressBar -->
     <ProgressBar

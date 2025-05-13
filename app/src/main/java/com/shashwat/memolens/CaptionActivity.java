@@ -1,5 +1,5 @@
 package com.shashwat.memolens;
-
+import android.widget.ProgressBar;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.BitmapFactory;
+import android.view.View;
 import android.graphics.Bitmap;
 import android.widget.Toast;
 import android.widget.ImageView;
@@ -45,6 +46,7 @@ public class CaptionActivity extends AppCompatActivity implements TextEncodingCa
     private VideoView videoView;
     private ImageButton playButton;
     private Bitmap encoded_image;
+
 
     public interface TextEncodingCallback {
 
@@ -222,59 +224,35 @@ public class CaptionActivity extends AppCompatActivity implements TextEncodingCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Hide the action bar
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setGravity(Gravity.CENTER);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
+        // Set the XML layout
         setContentView(R.layout.activity_caption);
 
+        // Retrieve views from the XML layout
+        ImageView capturedImage = findViewById(R.id.captured_image);
+        EditText captionInput = findViewById(R.id.caption_input);
+
+        Button saveButton = findViewById(R.id.saveButton);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        final View overlay = findViewById(R.id.overlay);
+
         String imagePath = getIntent().getStringExtra("image_path");
-        ImageView imageView = new ImageView(this);
-        imageView.setImageBitmap(getRotatedBitmap(imagePath));
+        if (imagePath != null) {
+            capturedImage.setImageBitmap(getRotatedBitmap(imagePath));
+        }
 
-        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                0,
-                0.15f
-        );
-        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        imageView.setLayoutParams(imageParams);
-
-        EditText captionInput = new EditText(this);
-        captionInput.setHint("Add your caption here...");
-        captionInput.setTextSize(16);
-        captionInput.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        Button btnRecord = new Button(this);
-        btnRecord.setText("Hold to Record Voice Note");
-
-        btnRecord.setOnTouchListener((v, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    startRecording();
-                    return true;
-                case MotionEvent.ACTION_UP:
-                    stopRecording();
-                    return true;
-            }
-            return false;
-        });
-
-        Button saveButton = new Button(this);
-        saveButton.setText("Save");
+        // Set the save button click listener
         saveButton.setOnClickListener(v -> {
             String caption = captionInput.getText().toString();
             Bitmap originalBitmap = getRotatedBitmap(imagePath);
+
+            progressBar.setVisibility(View.VISIBLE);
+            overlay.setVisibility(View.VISIBLE);
 
             // Initialize ImageSteganography with caption and image
             imageSteganography = new ImageSteganography(caption, "Shashwat", originalBitmap);
@@ -282,23 +260,11 @@ public class CaptionActivity extends AppCompatActivity implements TextEncodingCa
             // Initialize TextEncoding and encode with the callback
             TextEncoding textEncoding = new TextEncoding(CaptionActivity.this, CaptionActivity.this);
             textEncoding.encode(imageSteganography);  // Ensure encoding process triggers correctly
-
         });
 
-//        voiceContainer = new LinearLayout(this);
-//        voiceContainer.setOrientation(LinearLayout.VERTICAL);
-//        voiceContainer.setId(R.id.voice_note_container);
-//        voiceContainer.setLayoutParams(new LinearLayout.LayoutParams(
-//                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-//        ));
-
-        layout.addView(imageView);
-        layout.addView(captionInput);
-//        layout.addView(btnRecord);
-//        layout.addView(voiceContainer);
-        layout.addView(saveButton);
-        setContentView(layout);
     }
+
+
 
     public void decodeImage(Bitmap stegoBitmap, String secretKey) {
         // Initialize the ImageSteganography instance for decoding
@@ -349,6 +315,11 @@ public class CaptionActivity extends AppCompatActivity implements TextEncodingCa
                     new String[]{"image/png"},
                     null
             );
+
+            ProgressBar progressBar = findViewById(R.id.progressBar);
+            final View overlay = findViewById(R.id.overlay);
+            progressBar.setVisibility(View.GONE);
+            overlay.setVisibility(View.GONE);
 
             // 5. Show success message
             Toast.makeText(this, "Image saved to Pictures/MemoLens", Toast.LENGTH_SHORT).show();

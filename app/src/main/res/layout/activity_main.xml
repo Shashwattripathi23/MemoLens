@@ -5,90 +5,90 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:requestLegacyExternalStorage="true"
+    android:background="@color/background_dark"
     tools:context=".MainActivity">
 
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <!-- Gradient Overlay -->
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/overlay_gradient"
         android:visibility="gone" />
 
 
-    <!-- Preview View for Camera -->
+
+    <!-- Camera Preview with Holographic Border -->
     <androidx.camera.view.PreviewView
         android:id="@+id/view_finder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/holographic_border"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Capture Photo Button (Icon) -->
-    <ImageButton
-        android:id="@+id/btn_capture_photo"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/camera_ic"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:padding="0dp"
-        android:contentDescription="@string/capture_photo"
-        android:background="?android:attr/selectableItemBackgroundBorderless" />
-
-
-    <!-- Record Video Button (Icon) -->
-<!--    <ImageButton-->
-<!--        android:id="@+id/btn_record_video"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginBottom="32dp"-->
-<!--        android:layout_marginEnd="32dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        android:src="@drawable/ic_videocam"-->
-<!--    android:contentDescription="@string/record_video"-->
-<!--    android:background="?android:attr/selectableItemBackgroundBorderless"/>-->
-
-    <!-- Open Gallery Button (Icon) -->
+    <!-- Open Gallery Button -->
     <ImageButton
         android:id="@+id/btn_open_gallery"
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="32dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/gallery_ic"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:padding="0dp"
-        android:contentDescription="@string/open_gallery"
-        android:background="?android:attr/selectableItemBackgroundBorderless" />
+        android:background="@drawable/button_background"
+        android:padding="16dp" />
 
+    <!-- Capture Photo Button -->
+    <ImageButton
+        android:id="@+id/btn_capture_photo"
+        android:layout_width="102dp"
+        android:layout_height="102dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/camera_ic"
+        android:background="@drawable/button_background"
+        android:padding="16dp" />
 
-
-    <!-- Flip Camera Button (Icon) -->
+    <!-- Flip Camera Button -->
     <ImageButton
         android:id="@+id/btn_flip_camera"
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/flip_camera_ic"
-        android:contentDescription="@string/flip_camera"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:padding="0dp" />
+        android:background="@drawable/button_background"
+        android:padding="16dp" />
+    <ImageButton
+        android:id="@+id/btn_torch"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_torch"
+        android:rotation="0"
+        android:background="@drawable/button_background"
+        android:padding="12dp" />
 
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

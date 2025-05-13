@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import android.graphics.Bitmap;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
+import java.io.File;
 
 public class PhotoActivity extends AppCompatActivity implements TextDecodingCallback {
 
@@ -36,6 +47,11 @@ public class PhotoActivity extends AppCompatActivity implements TextDecodingCall
         setContentView(R.layout.activity_photo);
 
 
+        ImageView shareIcon = findViewById(R.id.shareIcon);
+
+
+
+
         ImageView fullImageView = findViewById(R.id.fullImageView);
         decodedMessageView = findViewById(R.id.decodedMessage);
         decodedDateView = findViewById(R.id.captureDate);
@@ -48,6 +64,8 @@ public class PhotoActivity extends AppCompatActivity implements TextDecodingCall
         // Get the image path from the intent
         String imagePath = getIntent().getStringExtra("imagePath");
 
+        shareIcon.setOnClickListener(v -> shareImage(currentImageFile));
+
         if (imagePath != null) {
             currentImageFile = new File(imagePath);
             decode(currentImageFile);
@@ -59,6 +77,23 @@ public class PhotoActivity extends AppCompatActivity implements TextDecodingCall
         // Set up delete icon click listener
         deleteIcon.setOnClickListener(v -> showDeleteConfirmationDialog());
     }
+
+    private void shareImage(File imageFile) {
+        try {
+            Uri imageUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", imageFile);
+
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("application/*");  // Set MIME type as application/*
+            shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            startActivity(Intent.createChooser(shareIntent, "Share Document"));
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(this, "Failed to share document", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
 
     private void decode(File file){
         Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());

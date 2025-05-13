@@ -17,5 +17,5 @@
         android:layout_height="150dp"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
-        android:background="#FF0000" />
+        android:background="#222222" />
 </androidx.cardview.widget.CardView>
