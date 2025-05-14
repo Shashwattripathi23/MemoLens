@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -66,7 +67,20 @@ import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.graphics.Bitmap;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.ImageAnalysis;
+import androidx.camera.core.ImageProxy;
+import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.camera.view.PreviewView;
+import androidx.core.content.ContextCompat;
+import androidx.palette.graphics.Palette;
+import android.view.View;
+import java.nio.ByteBuffer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
 
 //    private Camera/ previewView;
@@ -81,6 +95,10 @@ public class MainActivity extends AppCompatActivity {
     // Method to get output file for the captured image
     private PreviewView previewView;
     private ProgressBar progressBar;
+
+
+    private View overlay;
+    private ExecutorService cameraExecutor;
 
     private boolean isRecording = false;
     private Button btnStartVideo, btnStopVideo, btnRecordVideo;
@@ -176,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.progress_bar);
+        overlay = findViewById(R.id.main_layout);
 
         findViewById(R.id.btn_open_gallery).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
@@ -192,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+        cameraExecutor = Executors.newSingleThreadExecutor();
 
         ImageButton info_btn = findViewById(R.id.btn_torch);
         info_btn.setOnClickListener(v -> toggleInfo());
@@ -310,32 +330,149 @@ public class MainActivity extends AppCompatActivity {
     private void startCamera() {
         cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA; // Default to back camera
 
-        cameraProviderFuture = ProcessCameraProvider.getInstance(this); // Initialize the cameraProviderFuture at the class level
+        cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(() -> {
             try {
-                // Get the camera provider
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
 
-                // Set up the Preview use case
+                ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
+                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                        .build();
+
+                imageAnalysis.setAnalyzer(cameraExecutor, this::analyzeFrame);
+
                 Preview preview = new Preview.Builder()
                         .setTargetAspectRatio(AspectRatio.RATIO_16_9)
                         .build();
+
                 preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
-                // Set up the ImageCapture use case
                 imageCapture = new ImageCapture.Builder()
                         .setTargetAspectRatio(AspectRatio.RATIO_16_9)
                         .setTargetRotation(getWindowManager().getDefaultDisplay().getRotation())
                         .build();
 
-                // Bind the camera use cases
-                bindCameraUseCases(cameraProvider); // Passing only cameraProvider as preview is part of it
+                cameraProvider.unbindAll();
+                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture, imageAnalysis);
 
             } catch (ExecutionException | InterruptedException e) {
                 Log.e("CameraX", "Error starting camera", e);
             }
         }, ContextCompat.getMainExecutor(this));
     }
+
+    private void analyzeFrame(ImageProxy image) {
+        Bitmap bitmap = imageProxyToBitmap(image);
+        if (bitmap != null) {
+            // Calculate the average color
+            int averageColor = calculateAverageColor(bitmap);
+
+            // Apply the average color to the main layout
+            runOnUiThread(() -> {
+                if (overlay != null) {
+                    int[] colors = {averageColor, Color.BLACK}; // Gradient from average color to black
+                    GradientDrawable gradientDrawable = new GradientDrawable(
+                            GradientDrawable.Orientation.TOP_BOTTOM, colors
+                    );
+                    gradientDrawable.setCornerRadius(0f);
+                    overlay.setBackground(gradientDrawable);
+                }
+            });
+        }
+        image.close();
+    }
+
+
+    private int calculateAverageColor(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        long sumRed = 0, sumGreen = 0, sumBlue = 0;
+        int totalPixels = width * height;
+
+        // Iterate through all pixels and accumulate RGB values
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int pixel = bitmap.getPixel(x, y);
+
+                sumRed += Color.red(pixel);
+                sumGreen += Color.green(pixel);
+                sumBlue += Color.blue(pixel);
+            }
+        }
+
+        // Calculate average for each color channel
+        int avgRed = (int) (sumRed / totalPixels);
+        int avgGreen = (int) (sumGreen / totalPixels);
+        int avgBlue = (int) (sumBlue / totalPixels);
+
+        // Return the averaged color
+        return Color.rgb(avgRed, avgGreen, avgBlue);
+    }
+
+
+
+
+
+    private Bitmap imageProxyToBitmap(ImageProxy image) {
+        ImageProxy.PlaneProxy[] planes = image.getPlanes();
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        // Use ARGB_8888 for correct color format
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+        // Extract pixel data in YUV_420_888 format
+        ByteBuffer yBuffer = planes[0].getBuffer();
+        ByteBuffer uBuffer = planes[1].getBuffer();
+        ByteBuffer vBuffer = planes[2].getBuffer();
+
+        byte[] yBytes = new byte[yBuffer.remaining()];
+        byte[] uBytes = new byte[uBuffer.remaining()];
+        byte[] vBytes = new byte[vBuffer.remaining()];
+
+        yBuffer.get(yBytes);
+        uBuffer.get(uBytes);
+        vBuffer.get(vBytes);
+
+        // Convert YUV to ARGB
+        int[] argb = new int[width * height];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int yIndex = i * width + j;
+                int uvIndex = (i / 2) * (width / 2) + (j / 2);
+
+                int y = yBytes[yIndex] & 0xFF;
+                int u = uBytes[uvIndex] & 0xFF;
+                int v = vBytes[uvIndex] & 0xFF;
+
+                // Convert YUV to RGB (simplified)
+                int r = (int) (y + 1.370705 * (v - 128));
+                int g = (int) (y - 0.337633 * (u - 128) - 0.698001 * (v - 128));
+                int b = (int) (y + 1.732446 * (u - 128));
+
+                // Clip to valid color range
+                r = Math.min(255, Math.max(0, r));
+                g = Math.min(255, Math.max(0, g));
+                b = Math.min(255, Math.max(0, b));
+
+                argb[yIndex] = 0xFF000000 | (r << 16) | (g << 8) | b;
+            }
+        }
+
+        bitmap.setPixels(argb, 0, width, 0, 0, width, height);
+        return bitmap;
+    }
+
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cameraExecutor.shutdown();
+    }
+
 
     // Method to bind camera use cases with parameters
     private void bindCameraUseCases(ProcessCameraProvider cameraProvider) {

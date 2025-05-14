@@ -45,7 +45,14 @@ public class PhotoActivity extends AppCompatActivity implements TextDecodingCall
             getSupportActionBar().hide();
         }
         setContentView(R.layout.activity_photo);
-
+        ImageView backIcon = findViewById(R.id.btn_back);
+        backIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Just finish the current activity to go back
+                finish();
+            }
+        });
 
         ImageView shareIcon = findViewById(R.id.shareIcon);
 

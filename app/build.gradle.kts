@@ -11,7 +11,7 @@ android {
         minSdk = 21
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0.2"
+        versionName = "1.0.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -74,4 +74,8 @@ dependencies {
 
     // Image Steganography Library
     implementation(project(":ImageSteganographyLibrary"))
+
+    // Colour Palette background
+    implementation ("androidx.palette:palette:1.0.0")
+
 }

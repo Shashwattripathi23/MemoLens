@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.view.View;
@@ -73,6 +74,15 @@ public class GalleryActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
+        ImageView backIcon = findViewById(R.id.btn_back);
+        backIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Just finish the current activity to go back
+                finish();
+            }
+        });
 
         // Initialize the ActivityResultLauncher
         getContent = registerForActivityResult(

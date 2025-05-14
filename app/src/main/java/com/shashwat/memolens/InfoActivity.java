@@ -42,10 +42,8 @@ public class InfoActivity extends AppCompatActivity {
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate back to MainActivity
-                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish(); // Optionally finish this activity if you don't want to keep it in the back stack
+                // Just finish the current activity to go back
+                finish();
             }
         });
     }

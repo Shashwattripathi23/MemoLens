@@ -233,6 +233,15 @@ public class CaptionActivity extends AppCompatActivity implements TextEncodingCa
         // Set the XML layout
         setContentView(R.layout.activity_caption);
 
+        ImageView backIcon = findViewById(R.id.btn_back);
+        backIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Just finish the current activity to go back
+                finish();
+            }
+        });
+
         // Retrieve views from the XML layout
         ImageView capturedImage = findViewById(R.id.captured_image);
         EditText captionInput = findViewById(R.id.caption_input);
