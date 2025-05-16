@@ -9,6 +9,10 @@ import android.widget.Toast;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.graphics.Outline;
+import android.os.Build;
+import android.view.View;
+import android.view.ViewOutlineProvider;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -277,6 +281,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         previewView = findViewById(R.id.view_finder);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            float radius = 30f;  // e.g., 30 pixels for corner radius, adjust as needed
+            previewView.setClipToOutline(true);
+            previewView.setOutlineProvider(new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), radius);
+                }
+            });
+        }
 
         // Request camera permission if not granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -330,30 +344,41 @@ public class MainActivity extends AppCompatActivity {
     private void startCamera() {
         cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA; // Default to back camera
 
-        cameraProviderFuture = ProcessCameraProvider.getInstance(this);
+        cameraProviderFuture = ProcessCameraProvider.getInstance(this); // Initialize the cameraProviderFuture at the class level
         cameraProviderFuture.addListener(() -> {
             try {
+                // Get the camera provider
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
 
-                ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
-                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                        .build();
-
-                imageAnalysis.setAnalyzer(cameraExecutor, this::analyzeFrame);
-
+                // Set up the Preview use case
                 Preview preview = new Preview.Builder()
                         .setTargetAspectRatio(AspectRatio.RATIO_16_9)
                         .build();
-
                 preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // Set up the ImageCapture use case
                 imageCapture = new ImageCapture.Builder()
                         .setTargetAspectRatio(AspectRatio.RATIO_16_9)
                         .setTargetRotation(getWindowManager().getDefaultDisplay().getRotation())
                         .build();
 
-                cameraProvider.unbindAll();
-                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture, imageAnalysis);
+                // Bind the camera use cases
+                bindCameraUseCases(cameraProvider); // Passing only cameraProvider as preview is part of it
 
             } catch (ExecutionException | InterruptedException e) {
                 Log.e("CameraX", "Error starting camera", e);

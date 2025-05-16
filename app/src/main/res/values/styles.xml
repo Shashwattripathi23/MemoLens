@@ -2,5 +2,6 @@
     <style name="AppTheme" parent="Theme.AppCompat.DayNight">
 
         <item name="android:fontFamily">@font/roboto</item>
+
     </style>
 </resources>

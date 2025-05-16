@@ -1,0 +1,23 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer Border -->
+    <item>
+        <shape>
+            <solid android:color="#FFFFFF" />
+            <stroke android:width="4dp" android:color="#E0E0E0" />
+            <corners android:radius="48dp" />
+        </shape>
+    </item>
+
+    <!-- Inner Gradient for Soft Shine -->
+    <item android:left="6dp" android:right="6dp" android:top="6dp" android:bottom="6dp">
+        <shape>
+            <gradient
+                android:type="radial"
+                android:gradientRadius="75dp"
+                android:startColor="#ddd"
+                android:endColor="#eee"
+                android:centerColor="#bbb" />
+            <corners android:radius="44dp" />
+        </shape>
+    </item>
+</layer-list>

@@ -1,0 +1,15 @@
+<resources>
+    <!-- Responsive Text Size -->
+    <dimen name="responsive_text_size">14sp</dimen>
+    <dimen name="capture_button_size">96dp</dimen>
+    <dimen name="capture_button_margin_bottom">28dp</dimen>
+    <dimen name="capture_button_padding">16dp</dimen>
+
+    <!-- Small Button Dimensions -->
+    <dimen name="small_button_size">68dp</dimen>
+    <dimen name="small_button_margin_bottom">40dp</dimen>
+    <dimen name="small_button_padding">12dp</dimen>
+
+    <!-- Spacing between buttons -->
+    <dimen name="button_spacing">64dp</dimen>
+</resources>
